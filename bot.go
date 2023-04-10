@@ -49,7 +49,7 @@ func NewBot(pref Settings) (*Bot, error) {
 		verbose:     pref.Verbose,
 		parseMode:   pref.ParseMode,
 		client:      client,
-		pool:        NewPool(0, 0),
+		pool:        NewPool(pref.poolSize, pref.poolDeep),
 	}
 	bot.startPool()
 
@@ -122,6 +122,12 @@ type Settings struct {
 
 	// Offline allows to create a bot without network for testing purposes.
 	Offline bool
+
+	// goroutine num,default 10
+	poolSize int
+
+	// the num of each goroutine length,default 100
+	poolDeep int
 }
 
 var defaultOnError = func(err error, c Context) {

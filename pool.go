@@ -1,13 +1,13 @@
 package telebot
 
 type Pool struct {
-	size  int64
+	size  int
 	deep  int
 	stop  chan int
 	queue []chan Update
 }
 
-func NewPool(size int64, deep int) *Pool {
+func NewPool(size int, deep int) *Pool {
 	if size <= 0 {
 		size = 10
 	}
@@ -16,7 +16,7 @@ func NewPool(size int64, deep int) *Pool {
 	}
 
 	t := make([]chan Update, size)
-	for i := int64(0); i < size; i++ {
+	for i := 0; i < size; i++ {
 		t[i] = make(chan Update, deep)
 	}
 
@@ -27,7 +27,7 @@ func NewPool(size int64, deep int) *Pool {
 }
 
 func (b *Bot) startPool() {
-	for i := int64(0); i < b.pool.size; i++ {
+	for i := 0; i < b.pool.size; i++ {
 		go b.worker(b.pool.queue[i])
 	}
 
@@ -49,6 +49,7 @@ func (b *Bot) Submit(update Update) {
 	if id < 0 {
 		id = -id
 	}
-	c := b.pool.queue[id%b.pool.size]
+	idx := int(id)
+	c := b.pool.queue[idx%b.pool.size]
 	c <- update
 }
