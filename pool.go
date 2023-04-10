@@ -46,6 +46,9 @@ func (b *Bot) Submit(update Update) {
 		return
 	}
 	id := update.Message.Chat.ID
+	if id < 0 {
+		id = -id
+	}
 	c := b.pool.queue[id%b.pool.size]
 	c <- update
 }
