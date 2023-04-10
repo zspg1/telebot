@@ -49,7 +49,7 @@ func NewBot(pref Settings) (*Bot, error) {
 		verbose:     pref.Verbose,
 		parseMode:   pref.ParseMode,
 		client:      client,
-		pool:        NewPool(pref.poolSize, pref.poolDeep),
+		pool:        NewPool(pref.PoolSize, pref.PoolDeep),
 	}
 	bot.startPool()
 
@@ -124,10 +124,10 @@ type Settings struct {
 	Offline bool
 
 	// goroutine num,default 10
-	poolSize int
+	PoolSize int
 
 	// the num of each goroutine length,default 100
-	poolDeep int
+	PoolDeep int
 }
 
 var defaultOnError = func(err error, c Context) {
